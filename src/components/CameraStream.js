@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from 'react';
+import { Button } from '@material-ui/core';
 import { useUserMedia } from '../hooks/useUserMedia';
 import { predictPokemon } from '../prediction';
+import { useStyles } from '../hooks/useStyles';
 
 const CAPTURE_OPTIONS = {
   video: { facingMode: 'environment' },
@@ -10,6 +12,7 @@ const CameraStream = ({onCapture, setResumeVideo}) => {
   const videoRef = useRef();
   const canvasRef = useRef();
   const mediaStream = useUserMedia(CAPTURE_OPTIONS);
+  const classes = useStyles();
 
   useEffect(() => {
     setResumeVideo(() => restart);
@@ -38,9 +41,11 @@ const CameraStream = ({onCapture, setResumeVideo}) => {
 
   return (
     <div id="pokedex-container">
-      <video ref={videoRef} onCanPlay={handleCanPlay} autoPlay playsInline muted />
+      <video id="player" ref={videoRef} onCanPlay={handleCanPlay} autoPlay playsInline muted />
       <canvas id="canvas" ref={canvasRef} hidden></canvas>
-      <button onClick={handleClick}>Who's that Pokémon?</button>
+      <div id="capture-container">
+        <Button id="capture-button" className={classes.colorful} onClick={handleClick}>Who's that Pokémon?</Button>
+      </div>
     </div>
   )
 }
