@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useUserMedia } from '../hooks/useUserMedia';
 import { predictPokemon } from '../prediction';
 
@@ -6,10 +6,14 @@ const CAPTURE_OPTIONS = {
   video: { facingMode: 'environment' },
 };
 
-const CameraStream = ({onCapture}) => {
+const CameraStream = ({onCapture, setResumeVideo}) => {
   const videoRef = useRef();
   const canvasRef = useRef();
   const mediaStream = useUserMedia(CAPTURE_OPTIONS);
+
+  useEffect(() => {
+    setResumeVideo(() => restart);
+  }, []);
 
   if (mediaStream && videoRef.current && !videoRef.current.srcObject) {
     videoRef.current.srcObject = mediaStream;
@@ -37,7 +41,6 @@ const CameraStream = ({onCapture}) => {
       <video ref={videoRef} onCanPlay={handleCanPlay} autoPlay playsInline muted />
       <canvas id="canvas" ref={canvasRef} hidden></canvas>
       <button onClick={handleClick}>Who's that Pokémon?</button>
-      <button type="button" onClick={restart}>Retry</button>
     </div>
   )
 }
