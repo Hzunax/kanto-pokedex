@@ -1,5 +1,6 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { useUserMedia } from '../hooks/useUserMedia';
 import { predictPokemon } from '../prediction';
 import { useStyles } from '../hooks/useStyles';
@@ -9,6 +10,7 @@ const CAPTURE_OPTIONS = {
 };
 
 const CameraStream = ({onCapture, setResumeVideo}) => {
+  const [isLoading, setIsLoading] = useState(false);
   const videoRef = useRef();
   const canvasRef = useRef();
   const mediaStream = useUserMedia(CAPTURE_OPTIONS);
@@ -33,10 +35,13 @@ const CameraStream = ({onCapture, setResumeVideo}) => {
   }
 
   const handleClick = async () => {
+    setIsLoading(true);
     const context = canvasRef.current.getContext('2d');
     context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
     videoRef.current.pause();
-    onCapture(await predictPokemon(canvasRef.current));
+    const pokemon = await predictPokemon(canvasRef.current);
+    onCapture(pokemon);
+    setIsLoading(false);
   }
 
   return (
@@ -44,7 +49,12 @@ const CameraStream = ({onCapture, setResumeVideo}) => {
       <video id="player" ref={videoRef} onCanPlay={handleCanPlay} autoPlay playsInline muted />
       <canvas id="canvas" ref={canvasRef} hidden></canvas>
       <div id="capture-container">
-        <Button id="capture-button" className={classes.colorful} onClick={handleClick}>Who's that Pokémon?</Button>
+        <Button id="capture-button" className={classes.colorful} onClick={handleClick}>
+          {isLoading
+            ? <CircularProgress color="inherit" />
+            : 'Who\'s that Pokémon?'
+          }
+        </Button>
       </div>
     </div>
   )
