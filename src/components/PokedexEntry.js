@@ -29,10 +29,22 @@ const PokedexEntry = ({ pokemon, open, handleClose }) => {
         <DialogContent>
           <DialogContentText id="dialog-description">
             <img id="pokemon-sprite" src={pokemon?.sprites?.front_default} alt={pokemon?.name} />
-            <p>
+            <div>
               <span>Height: {pokemon?.height} </span>
               <span>Weight: {pokemon?.weight}</span>
-            </p>
+            </div>
+            <div id="move-set">
+              <ul>
+                {pokemon?.moves?.filter(
+                  move => move.version_group_details.some(
+                    detail => (detail.version_group.name === 'firered-leafgreen' && detail.level_learned_at > 0)
+                  ))
+                  .filter(move => move.version_group_details.length > 0)
+                  .sort((a, b) => a.version_group_details[0].level_learned_at - b.version_group_details[0].level_learned_at)
+                  .map(move => <li key={move.move.name}>{move.move.name} @ lvl {move.version_group_details[0].level_learned_at}</li>)
+                }
+              </ul>
+            </div>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
