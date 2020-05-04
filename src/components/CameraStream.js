@@ -34,14 +34,16 @@ const CameraStream = ({onCapture, setResumeVideo}) => {
     videoRef.current.play();
   }
 
-  const handleClick = async () => {
+  const handleClick = () => {
     setIsLoading(true);
     const context = canvasRef.current.getContext('2d');
     context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
     videoRef.current.pause();
-    const pokemon = await predictPokemon(canvasRef.current);
-    onCapture(pokemon);
-    setIsLoading(false);
+    setTimeout(async () => {
+        const pokemon = await predictPokemon(canvasRef.current);
+        onCapture(pokemon);
+        setIsLoading(false);
+      }, 0); // Use setImmediate or setTimeout(.., 0) to unblock the event loop.
   }
 
   return (
