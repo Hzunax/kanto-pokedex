@@ -7,7 +7,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
-import { Transition } from "./Transition";
+import { Transition } from "../components/Transition";
 
 const PokedexEntry = ({ pokemon, open, handleClose }) => {
   const theme = useTheme();
@@ -27,25 +27,23 @@ const PokedexEntry = ({ pokemon, open, handleClose }) => {
           #{pokemon?.id} {pokemon?.name}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="dialog-description">
+          <DialogContentText id="dialog-img">
             <img id="pokemon-sprite" src={pokemon?.sprites?.front_default} alt={pokemon?.name} />
-            <div>
-              <span>Height: {pokemon?.height} </span>
-              <span>Weight: {pokemon?.weight}</span>
-            </div>
-            <div id="move-set">
-              <ul>
-                {pokemon?.moves?.filter(
-                  move => move.version_group_details.some(
-                    detail => (detail.version_group.name === 'firered-leafgreen' && detail.level_learned_at > 0)
-                  ))
-                  .filter(move => move.version_group_details.length > 0)
-                  .sort((a, b) => a.version_group_details[0].level_learned_at - b.version_group_details[0].level_learned_at)
-                  .map(move => <li key={move.move.name}>{move.move.name} @ lvl {move.version_group_details[0].level_learned_at}</li>)
-                }
-              </ul>
-            </div>
           </DialogContentText>
+          <DialogContentText id="dialog-description">
+            <span>Height: {pokemon?.height} </span>
+            <span>Weight: {pokemon?.weight}</span>
+          </DialogContentText>
+          <ul>
+            {pokemon?.moves?.filter(
+              move => move.version_group_details.some(
+                detail => (detail.version_group.name === 'firered-leafgreen' && detail.level_learned_at > 0)
+              ))
+              .filter(move => move.version_group_details.length > 0)
+              .sort((a, b) => a.version_group_details[0].level_learned_at - b.version_group_details[0].level_learned_at)
+              .map(move => <li key={move.move.name}>{move.move.name} @ lvl {move.version_group_details[0].level_learned_at}</li>)
+            }
+          </ul>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

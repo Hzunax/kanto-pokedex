@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import './App.css';
 import { init } from './prediction';
-import PokedexContainer from './components/PokedexContainer';
+import PokedexContainer from './Pokedex/PokedexContainer';
 import InitialPage from './components/InitialPage';
 import { useStyles } from './hooks/useStyles';
 
@@ -35,7 +34,7 @@ function App() {
           case PAGE_STATES.LOADING:
             return (
               <Backdrop className={classes.backdrop} open={PAGE_STATES.LOADING}>
-                <CircularProgress color="inherit" />
+                <div className={classes.loader}>Loading ...</div>
               </Backdrop>
             );
           case PAGE_STATES.READY:

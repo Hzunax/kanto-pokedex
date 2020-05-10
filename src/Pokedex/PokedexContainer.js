@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as Pokedex from 'pokeapi-js-wrapper';
-import CameraStream from './CameraStream';
+import CameraStream from '../Camera/CameraStream';
 import PokedexEntry from './PokedexEntry';
 
 const P = new Pokedex.Pokedex();

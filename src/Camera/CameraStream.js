@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { useUserMedia } from '../hooks/useUserMedia';
 import { predictPokemon } from '../prediction';
 import { useStyles } from '../hooks/useStyles';
@@ -53,7 +52,7 @@ const CameraStream = ({onCapture, setResumeVideo}) => {
       <div id="capture-container">
         <Button id="capture-button" className={classes.colorful} onClick={handleClick}>
           {isLoading
-            ? <CircularProgress color="inherit" />
+            ? <div className={classes.loader}>Loading ...</div>
             : 'Who\'s that Pokémon?'
           }
         </Button>
